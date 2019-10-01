@@ -39,7 +39,7 @@ const Todo = (props: { item: ITodoItem, onUpdate: Function, onDelete: Function }
             })
 
             .catch(error => {
-                console.error(`Failed to update!`);
+                console.error(`Failed to delete!`);
             });
     };
 
