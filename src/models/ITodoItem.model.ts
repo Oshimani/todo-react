@@ -1,5 +1,7 @@
 export default interface ITodoItem {
     id: number;
     name: string;
-    isComplete:boolean;
+    description: string;
+    isImportant: boolean;
+    isComplete: boolean;
 }

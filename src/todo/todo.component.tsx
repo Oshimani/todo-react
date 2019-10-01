@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { Card, } from '@uifabric/react-cards';
 import {
     Text,
@@ -7,37 +7,83 @@ import {
     StackItem,
     Stack,
     FontSizes,
-    DefaultPalette
+    DefaultPalette,
+    MessageBar,
+    MessageBarType
 } from 'office-ui-fabric-react';
-import ITodoItem from '../models/ITodoItem.model';
 
-export default function todo(props: { item: ITodoItem }) {
+import ITodoItem from '../models/ITodoItem.model';
+import ITodoService from '../services/todo-service.interface';
+import TodoService from '../services/todo.service';
+
+const Todo = (props: { item: ITodoItem, onUpdate: Function, onDelete: Function }) => {
+    const todoService: ITodoService = new TodoService();
+
+    const clickedComplete = () => {
+        todoService.update(props.item.id, { ...props.item, isComplete: true, })
+
+            .then((updatedTodo: ITodoItem) => {
+                props.onUpdate(props.item.id);
+            })
+
+            .catch(error => {
+                console.error(`Failed to update!`);
+            });
+    };
+
+    const clickedDelete = () => {
+        todoService.deleteById(props.item.id)
+
+            .then(() => {
+                props.onDelete(props.item.id);
+            })
+
+            .catch(error => {
+                console.error(`Failed to update!`);
+            });
+    };
+
     return (
         <div>
-            {props.item}
             <Card styles={{ root: { textAlign: 'initial' } }} tokens={{ padding: 5, childrenGap: 5, width: '100%', maxWidth: '-webkit-fill-available' }}>
                 <Card.Section tokens={{ padding: 4 }}>
                     <Stack horizontal tokens={{ childrenGap: 12 }}>
                         <StackItem>
-                            <Icon styles={{ root: { fontSize: FontSizes.xxLarge } }} iconName="TaskLogo"></Icon>
+                            {props.item.isImportant &&
+                                <Icon styles={{ root: { fontSize: FontSizes.xxLarge } }} iconName="LightningBolt"></Icon>
+                            }
+                            {!props.item.isImportant &&
+                                <Icon styles={{ root: { fontSize: FontSizes.xxLarge } }} iconName="DietPlanNotebook"></Icon>
+                            }
                         </StackItem>
                         <StackItem grow>
                             <Text styles={{ root: { fontSize: FontSizes.xLarge } }}>
-                                Contoso
+                                {props.item.name}
                             </Text>
                         </StackItem>
                     </Stack>
 
                 </Card.Section>
                 <Card.Section tokens={{ padding: 4 }} styles={{ root: { borderTop: `solid 1px ${DefaultPalette.neutralQuaternary}` } }}>
-                    <Text>Content</Text>
+                    <Text>{props.item.description}</Text>
                 </Card.Section>
                 {/* BUTTONS */}
                 <Card.Section tokens={{ padding: 4 }} horizontalAlign={"end"} horizontal styles={{ root: { borderTop: `solid 1px ${DefaultPalette.neutralQuaternary}` } }}>
-                    <IconButton className={"s"} iconProps={{ iconName: 'Completed' }}></IconButton>
-                    <IconButton iconProps={{ iconName: 'RecycleBin' }}></IconButton>
+                    {props.item.isComplete &&
+                        <StackItem grow>
+                            <MessageBar messageBarType={MessageBarType.success}>
+                                Completed!
+                            </MessageBar>
+                        </StackItem>
+                    }
+                    <IconButton onClick={() => clickedComplete()}
+                        disabled={props.item.isComplete}
+                        iconProps={{ iconName: 'Completed' }}></IconButton>
+                    <IconButton onClick={() => clickedDelete()} iconProps={{ iconName: 'RecycleBin' }}></IconButton>
                 </Card.Section>
             </Card>
         </div>
     )
 }
+
+export default Todo;
