@@ -1,5 +1,4 @@
 import React from 'react';
-import './todo.component.scss';
 import { Card, } from '@uifabric/react-cards';
 import {
     Text,
@@ -10,10 +9,12 @@ import {
     FontSizes,
     DefaultPalette
 } from 'office-ui-fabric-react';
+import ITodoItem from '../models/ITodoItem.model';
 
-export default function todo() {
+export default function todo(props: { item: ITodoItem }) {
     return (
         <div>
+            {props.item}
             <Card styles={{ root: { textAlign: 'initial' } }} tokens={{ padding: 5, childrenGap: 5, width: '100%', maxWidth: '-webkit-fill-available' }}>
                 <Card.Section tokens={{ padding: 4 }}>
                     <Stack horizontal tokens={{ childrenGap: 12 }}>
