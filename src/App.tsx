@@ -1,24 +1,27 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import './App.scss';
+import { Text, Stack, StackItem, FontSizes, DefaultPalette } from 'office-ui-fabric-react';
+
+import Todo from './todo/todo.component';
 
 const App: React.FC = () => {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Text styles={{ root: { fontSize: FontSizes.large } }}>My todo app in react</Text>
+      <Stack styles={{
+        root: {
+          // backgroundColor: DefaultPalette.neutralLighter,
+          margin: 'auto',
+          maxWidth: '60%'
+        }
+      }} tokens={{ childrenGap: 12, padding: 8 }}>
+        <StackItem styles={{ root: { backgroundColor: DefaultPalette.neutralLight } }} grow={1} >
+          <Todo></Todo>
+        </StackItem>
+        <StackItem styles={{ root: { backgroundColor: DefaultPalette.neutralLight } }} grow={1} >
+          <Todo></Todo>
+        </StackItem>
+      </Stack>
     </div>
   );
 }
