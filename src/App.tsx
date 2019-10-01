@@ -7,7 +7,6 @@ import ITodoItem from './models/ITodoItem.model';
 
 import TodoService from './services/todo.service';
 import ITodoService from './services/todo-service.interface';
-import TodoMockService from './services/todo-mock.service';
 import TodoForm from './todo-form/todo-form.component';
 
 const App: React.FC = () => {
@@ -51,7 +50,7 @@ const App: React.FC = () => {
       .then((todos: ITodoItem[]) => setTodoItems(todos))
 
       .catch(error => console.error(error));
-  }, []);
+  },);
 
 
   return (

@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Card } from '@uifabric/react-cards';
-import { Text, Stack, StackItem, Icon, MessageBar, MessageBarType, IconButton, TextField, ProgressIndicator } from 'office-ui-fabric-react';
+import { Stack, StackItem, Icon, MessageBar, MessageBarType, IconButton, TextField, ProgressIndicator } from 'office-ui-fabric-react';
 import { FontSizes, DefaultPalette } from '@uifabric/styling';
 import ITodoService from '../services/todo-service.interface';
 import TodoService from '../services/todo.service';
