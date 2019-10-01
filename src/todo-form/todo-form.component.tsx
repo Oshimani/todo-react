@@ -22,10 +22,14 @@ const TodoForm = (props: { onCreate: Function }) => {
             .then((newItem: ITodoItem) => {
                 setSubmissionStatus(AjaxState.success);
                 props.onCreate(newItem);
+
+                // reset fields for next todo
+                setName(String());
+                setDescription(String());
             })
 
             .catch(error => {
-                console.error(error);
+                console.error('Failed to create');
                 setSubmissionStatus(AjaxState.error);
             })
 
@@ -60,6 +64,7 @@ const TodoForm = (props: { onCreate: Function }) => {
                                     }
                                 }}
                                     placeholder={'Add your title here'}
+                                    value={name}
                                     borderless
                                     onChange={(element, value) => setName(String(value))}></TextField>
                             </StackItem>
@@ -79,6 +84,7 @@ const TodoForm = (props: { onCreate: Function }) => {
                             }
                         }}
                             placeholder={'Add your description here'}
+                            value={description}
                             resizable={false}
                             autoAdjustHeight
                             multiline
