@@ -46,6 +46,8 @@ const Todo = (props: { item: ITodoItem, onUpdate: Function, onDelete: Function }
     return (
         <div>
             <Card styles={{ root: { textAlign: 'initial' } }} tokens={{ padding: 5, childrenGap: 5, width: '100%', maxWidth: '-webkit-fill-available' }}>
+                
+                {/* HEADING */}
                 <Card.Section tokens={{ padding: 4 }}>
                     <Stack horizontal tokens={{ childrenGap: 12 }}>
                         <StackItem>
@@ -64,9 +66,14 @@ const Todo = (props: { item: ITodoItem, onUpdate: Function, onDelete: Function }
                     </Stack>
 
                 </Card.Section>
-                <Card.Section tokens={{ padding: 4 }} styles={{ root: { borderTop: `solid 1px ${DefaultPalette.neutralQuaternary}` } }}>
-                    <Text>{props.item.description}</Text>
-                </Card.Section>
+
+                {/* DESCRIPTION */}
+                {props.item.description &&
+                    <Card.Section tokens={{ padding: 4 }} styles={{ root: { borderTop: `solid 1px ${DefaultPalette.neutralQuaternary}` } }}>
+                        <Text>{props.item.description}</Text>
+                    </Card.Section>
+                }
+
                 {/* BUTTONS */}
                 <Card.Section tokens={{ padding: 4 }} horizontalAlign={"end"} horizontal styles={{ root: { borderTop: `solid 1px ${DefaultPalette.neutralQuaternary}` } }}>
                     {props.item.isComplete &&

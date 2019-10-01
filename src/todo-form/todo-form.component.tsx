@@ -1,27 +1,39 @@
 import React, { useState } from 'react'
 import { Card } from '@uifabric/react-cards';
-import { Text, Stack, StackItem, Icon, MessageBar, MessageBarType, IconButton, TextField } from 'office-ui-fabric-react';
+import { Text, Stack, StackItem, Icon, MessageBar, MessageBarType, IconButton, TextField, ProgressIndicator } from 'office-ui-fabric-react';
 import { FontSizes, DefaultPalette } from '@uifabric/styling';
 import ITodoService from '../services/todo-service.interface';
 import TodoService from '../services/todo.service';
 import ITodoItem from '../models/ITodoItem.model';
+import { AjaxState } from '../enums/ajax-state.enum';
 
 const TodoForm = (props: { onCreate: Function }) => {
 
     const todoService: ITodoService = new TodoService();
 
-    const [name, setName] = useState('');
-    const [description, setDescription] = useState('');
+    const [name, setName] = useState<string>(String());
+    const [description, setDescription] = useState<string>(String());
+    const [submissionStatus, setSubmissionStatus] = useState<AjaxState>(AjaxState.initial);
 
     const clickedSubmit = () => {
+        setSubmissionStatus(AjaxState.pending);
         todoService.create({ name, description, isComplete: false, isImportant: false } as ITodoItem)
 
             .then((newItem: ITodoItem) => {
+                setSubmissionStatus(AjaxState.success);
                 props.onCreate(newItem);
             })
 
             .catch(error => {
                 console.error(error);
+                setSubmissionStatus(AjaxState.error);
+            })
+
+            .finally(() => {
+                // reset submission button
+                setTimeout(() => {
+                    setSubmissionStatus(AjaxState.initial);
+                }, 3000);
             })
     };
 
@@ -73,11 +85,33 @@ const TodoForm = (props: { onCreate: Function }) => {
                             borderless
                             onChange={(element, value) => setDescription(String(value))}></TextField>
                     </Card.Section>
-                    {/* BUTTONS */}
-                    <Card.Section tokens={{ padding: 4 }} horizontalAlign={"end"} horizontal styles={{ root: { borderTop: `solid 1px ${DefaultPalette.neutralQuaternary}` } }}>
-                        {/* {!props.item.isComplete && */}
-                        <IconButton onClick={() => clickedSubmit()} disabled={!name} iconProps={{ iconName: 'Add' }}></IconButton>
 
+                    {/* BUTTONS & MESSAGES*/}
+                    <Card.Section tokens={{ padding: 4 }} horizontalAlign={"end"} horizontal styles={{ root: { borderTop: `solid 1px ${DefaultPalette.neutralQuaternary}` } }}>
+                        {submissionStatus === AjaxState.pending &&
+                            <StackItem grow>
+                                <ProgressIndicator />
+                            </StackItem>
+                        }
+
+                        {submissionStatus === AjaxState.success &&
+                            <StackItem grow>
+                                <MessageBar messageBarType={MessageBarType.success}>
+                                    Added your todo!
+                                </MessageBar>
+                            </StackItem>
+                        }
+
+                        {submissionStatus === AjaxState.error &&
+                            <StackItem grow>
+                                <MessageBar messageBarType={MessageBarType.error}>
+                                    Could not add your todo!
+                                </MessageBar>
+                            </StackItem>
+                        }
+                        <IconButton onClick={() => clickedSubmit()}
+                            disabled={!name || submissionStatus === AjaxState.pending}
+                            iconProps={{ iconName: 'Add' }}></IconButton>
                     </Card.Section>
                 </Card>
             </div>
