@@ -50,7 +50,7 @@ const App: React.FC = () => {
       .then((todos: ITodoItem[]) => setTodoItems(todos))
 
       .catch(error => console.error(error));
-  });
+  }, []);
 
 
   return (
