@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import './App.scss';
 import { Separator, Text, Stack, StackItem, FontSizes, DefaultPalette, FontWeights } from 'office-ui-fabric-react';
 
 import Todo from './todo/todo.component';
@@ -54,7 +53,7 @@ const App: React.FC = () => {
 
 
   return (
-    <div className="App">
+    <div style={{ textAlign: 'center' }}>
       <Text styles={{ root: { fontSize: FontSizes.large } }}>My todo app in react</Text>
       <br />
       {
@@ -86,7 +85,7 @@ const App: React.FC = () => {
           );
         })}
       </Stack>
-    </div >
+    </div>
   );
 }
 
