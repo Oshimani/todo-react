@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './App.scss';
-import { Separator, Text, Stack, StackItem, FontSizes, DefaultPalette } from 'office-ui-fabric-react';
+import { Separator, Text, Stack, StackItem, FontSizes, DefaultPalette, FontWeights } from 'office-ui-fabric-react';
 
 import Todo from './todo/todo.component';
 import ITodoItem from './models/ITodoItem.model';
@@ -50,7 +50,7 @@ const App: React.FC = () => {
       .then((todos: ITodoItem[]) => setTodoItems(todos))
 
       .catch(error => console.error(error));
-  },);
+  });
 
 
   return (
@@ -59,13 +59,19 @@ const App: React.FC = () => {
       <br />
       {
         todoItems &&
-        <Text styles={{ root: { fontSize: FontSizes.small } }}>I found {todoItems.length} todos for you.</Text>
+        <Text styles={{
+          root: {
+            fontSize: FontSizes.medium,
+            fontWeight: FontWeights.semilight,
+            selectors: { 'span': { fontWeight: FontWeights.semibold } }
+          }
+        }}>I found <span>{todoItems.length}</span> todos for you.</Text>
       }
       <Stack styles={{
         root: {
-          // backgroundColor: DefaultPalette.neutralLighter,
           margin: 'auto',
-          maxWidth: '60%'
+          maxWidth: '60%',
+          minWidth: 350
         }
       }} tokens={{ childrenGap: 12, padding: 8 }}>
         <StackItem styles={{ root: { backgroundColor: DefaultPalette.neutralLighterAlt } }} grow={1} >
