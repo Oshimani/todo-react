@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Card } from '@uifabric/react-cards';
-import { Stack, StackItem, Icon, MessageBar, MessageBarType, IconButton, TextField, ProgressIndicator } from 'office-ui-fabric-react';
+import { Stack, StackItem,  MessageBar, MessageBarType, IconButton, TextField, ProgressIndicator } from 'office-ui-fabric-react';
 import { FontSizes, DefaultPalette } from '@uifabric/styling';
 import ITodoService from '../services/todo-service.interface';
 import TodoService from '../services/todo.service';
@@ -13,11 +13,16 @@ const TodoForm = (props: { onCreate: Function }) => {
 
     const [name, setName] = useState<string>(String());
     const [description, setDescription] = useState<string>(String());
+    const [isImportant, setIsImportant] = useState<boolean | undefined>(undefined);
+
     const [submissionStatus, setSubmissionStatus] = useState<AjaxState>(AjaxState.initial);
 
     const clickedSubmit = () => {
         setSubmissionStatus(AjaxState.pending);
-        todoService.create({ name, description, isComplete: false, isImportant: false } as ITodoItem)
+
+        // use non important as default
+        if (isImportant === undefined) setIsImportant(false);
+        todoService.create({ name, description, isComplete: false, isImportant } as ITodoItem)
 
             .then((newItem: ITodoItem) => {
                 setSubmissionStatus(AjaxState.success);
@@ -26,6 +31,7 @@ const TodoForm = (props: { onCreate: Function }) => {
                 // reset fields for next todo
                 setName(String());
                 setDescription(String());
+                setIsImportant(undefined);
             })
 
             .catch(error => {
@@ -41,6 +47,17 @@ const TodoForm = (props: { onCreate: Function }) => {
             })
     };
 
+    const getIcon = () => {
+        switch (isImportant) {
+            case false:
+                return 'DietPlanNotebook';
+            case true:
+                return 'LightningBolt';
+            default:
+                return 'CircleAddition';
+        }
+    }
+
     return (
         <div>
             <div>
@@ -48,7 +65,42 @@ const TodoForm = (props: { onCreate: Function }) => {
                     <Card.Section tokens={{ padding: 4 }}>
                         <Stack horizontal tokens={{ childrenGap: 12 }}>
                             <StackItem>
-                                <Icon styles={{ root: { fontSize: FontSizes.xxLarge } }} iconName="CircleAddition"></Icon>
+                                <IconButton styles={{ icon: { fontSize: FontSizes.xxLarge } }}
+                                    iconProps={{ iconName: getIcon() }}
+                                    menuProps={{
+                                        calloutProps: {
+                                            styles: {
+                                                calloutMain: {
+                                                    selectors: {
+                                                        'div': {
+                                                            minWidth: 'unset',
+                                                        },
+                                                        'i':{
+                                                            fontSize:FontSizes.xLarge
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        },
+                                        isBeakVisible: true,
+                                        items: [
+                                            {
+                                                key: 'nonImportant',
+                                                name: 'Common',
+                                                title: 'not important',
+                                                onClick: () => setIsImportant(false),
+                                                iconProps: { iconName: 'DietPlanNotebook' }
+                                            },
+                                            {
+                                                key: 'Important',
+                                                name: 'Important',
+                                                title: 'important',
+                                                onClick: () => setIsImportant(true),
+                                                iconProps: { iconName: 'LightningBolt' }
+                                            }
+                                        ],
+                                        directionalHintFixed: true
+                                    }} ></IconButton>
                             </StackItem>
                             <StackItem grow>
                                 <TextField styles={{
