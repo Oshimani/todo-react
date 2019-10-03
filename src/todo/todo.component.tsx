@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { Card, } from '@uifabric/react-cards';
 import {
     Text,
@@ -15,12 +15,14 @@ import {
 
 import ITodoItem from '../models/ITodoItem.model';
 import ITodoService from '../services/todo-service.interface';
-import TodoService from '../services/todo.service';
 import { AjaxState } from '../enums/ajax-state.enum';
+import { initializeTodoService } from '../services/todo-service-helper';
+import DataSourceContext from '../contexts/data-source.context';
 
 const Todo = (props: { item: ITodoItem, onUpdate: Function, onDelete: Function }) => {
 
-    const todoService: ITodoService = new TodoService();
+    const todoService: ITodoService =
+        initializeTodoService(useContext(DataSourceContext));
 
     const [submissionStatus, setSubmissionStatus] = useState<AjaxState>(AjaxState.initial);
 
@@ -31,7 +33,7 @@ const Todo = (props: { item: ITodoItem, onUpdate: Function, onDelete: Function }
             .then((updatedTodo: ITodoItem) => {
                 // set initial because we already have a message bar for completed todos
                 setSubmissionStatus(AjaxState.initial);
-                
+
                 props.onUpdate(props.item.id);
             })
 

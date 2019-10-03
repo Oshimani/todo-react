@@ -1,24 +1,22 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Separator, Text, Stack, StackItem, FontSizes, DefaultPalette, FontWeights } from 'office-ui-fabric-react';
 
 import Todo from './todo/todo.component';
 import ITodoItem from './models/ITodoItem.model';
 
-import TodoService from './services/todo.service';
 import ITodoService from './services/todo-service.interface';
 import TodoForm from './todo-form/todo-form.component';
-import ServiceContextType from './models/service-context.model';
-import {ServiceTypeConsumer} from './contexts/service-type.context';
+import DataSourceContext from './contexts/data-source.context';
+import { initializeTodoService } from './services/todo-service-helper';
 
-// todo provide service type above this component
-// todo consume service type here
-// set service type dynamically
+// todo set service type dynamically
 
 const App: React.FC = () => {
 
   const [todoItems, setTodoItems] = useState(new Array<ITodoItem>());
-  
-  const todoService: ITodoService = new TodoService();
+
+  const todoService: ITodoService =
+    initializeTodoService(useContext(DataSourceContext));
 
   const reloadSingleItem = (id: number) => {
     console.log(`Reloading item: ${id}`);
@@ -56,44 +54,43 @@ const App: React.FC = () => {
       .then((todos: ITodoItem[]) => setTodoItems(todos))
 
       .catch(error => console.error(error));
+    // eslint-disable-next-line
   }, []);
 
 
   return (
     <div style={{ textAlign: 'center' }}>
-      <ServiceContextProvider value={ServiceContextType.localStorage}>
-        <Text styles={{ root: { fontSize: FontSizes.large } }}>My todo app in react</Text>
-        <br />
-        {
-          todoItems &&
-          <Text styles={{
-            root: {
-              fontSize: FontSizes.medium,
-              fontWeight: FontWeights.semilight,
-              selectors: { 'span': { fontWeight: FontWeights.semibold } }
-            }
-          }}>I found <span>{todoItems.length}</span> todos for you.</Text>
-        }
-        <Stack styles={{
+      <Text styles={{ root: { fontSize: FontSizes.large } }}>My todo app in react</Text>
+      <br />
+      {
+        todoItems &&
+        <Text styles={{
           root: {
-            margin: 'auto',
-            maxWidth: '60%',
-            minWidth: 350
+            fontSize: FontSizes.medium,
+            fontWeight: FontWeights.semilight,
+            selectors: { 'span': { fontWeight: FontWeights.semibold } }
           }
-        }} tokens={{ childrenGap: 12, padding: 8 }}>
-          <StackItem styles={{ root: { backgroundColor: DefaultPalette.neutralLighterAlt } }} grow={1} >
-            <TodoForm onCreate={(todoItem: ITodoItem) => addItem(todoItem)}></TodoForm>
-          </StackItem>
-          <Separator></Separator>
-          {todoItems.map((todo) => {
-            return (
-              <StackItem key={todo.id} styles={{ root: { backgroundColor: DefaultPalette.neutralLighterAlt } }} grow={1} >
-                <Todo item={todo} onUpdate={(id: number) => reloadSingleItem(id)} onDelete={(id: number) => removeItem(id)}></Todo>
-              </StackItem>
-            );
-          })}
-        </Stack>
-      </ServiceContext.Provider>
+        }}>I found <span>{todoItems.length}</span> todos for you.</Text>
+      }
+      <Stack styles={{
+        root: {
+          margin: 'auto',
+          maxWidth: '60%',
+          minWidth: 350
+        }
+      }} tokens={{ childrenGap: 12, padding: 8 }}>
+        <StackItem styles={{ root: { backgroundColor: DefaultPalette.neutralLighterAlt } }} grow={1} >
+          <TodoForm onCreate={(todoItem: ITodoItem) => addItem(todoItem)}></TodoForm>
+        </StackItem>
+        <Separator></Separator>
+        {todoItems.map((todo) => {
+          return (
+            <StackItem key={todo.id} styles={{ root: { backgroundColor: DefaultPalette.neutralLighterAlt } }} grow={1} >
+              <Todo item={todo} onUpdate={(id: number) => reloadSingleItem(id)} onDelete={(id: number) => removeItem(id)}></Todo>
+            </StackItem>
+          );
+        })}
+      </Stack>
     </div>
   );
 }

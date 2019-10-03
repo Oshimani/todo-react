@@ -1,15 +1,17 @@
 import React, { useState, useContext } from 'react'
 import { Card } from '@uifabric/react-cards';
-import { Stack, StackItem,  MessageBar, MessageBarType, IconButton, TextField, ProgressIndicator } from 'office-ui-fabric-react';
+import { Stack, StackItem, MessageBar, MessageBarType, IconButton, TextField, ProgressIndicator } from 'office-ui-fabric-react';
 import { FontSizes, DefaultPalette } from '@uifabric/styling';
 import ITodoService from '../services/todo-service.interface';
-import TodoService from '../services/todo.service';
 import ITodoItem from '../models/ITodoItem.model';
 import { AjaxState } from '../enums/ajax-state.enum';
+import { initializeTodoService } from '../services/todo-service-helper';
+import DataSourceContext from '../contexts/data-source.context';
 
 const TodoForm = (props: { onCreate: Function }) => {
 
-    const todoService: ITodoService = new TodoService();
+    const todoService: ITodoService =
+        initializeTodoService(useContext(DataSourceContext));
 
     const [name, setName] = useState<string>(String());
     const [description, setDescription] = useState<string>(String());
@@ -75,8 +77,8 @@ const TodoForm = (props: { onCreate: Function }) => {
                                                         'div': {
                                                             minWidth: 'unset',
                                                         },
-                                                        'i':{
-                                                            fontSize:FontSizes.xLarge
+                                                        'i': {
+                                                            fontSize: FontSizes.xLarge
                                                         }
                                                     }
                                                 }

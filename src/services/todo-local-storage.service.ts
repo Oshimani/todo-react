@@ -1,4 +1,3 @@
-import Axios, { AxiosResponse, AxiosError } from 'axios';
 import ITodoItem from '../models/ITodoItem.model';
 import ITodoService from './todo-service.interface';
 
@@ -51,36 +50,46 @@ export default class TodoLocalStorateService implements ITodoService {
 
     public update(id: number, todoItem: ITodoItem): Promise<ITodoItem> {
         return new Promise<ITodoItem>((resolve, reject) => {
-            const items: ITodoItem[] = this._getItems();
+            setTimeout(() => {
 
-            let item = items.find(todo => todo.id === id);
-            if (item) {
-                item = todoItem;
-                this._setItems(items);
-                resolve(item);
-            }
+                const items: ITodoItem[] = this._getItems();
 
-            reject(new Error('Item does not exist!'));
+                items.forEach(item => {
+                    if (item.id === id) {
+                        Object.assign(item, todoItem);
+                        this._setItems(items);
+                        resolve(todoItem);
+                    }
+                });
+
+                reject(new Error('Item does not exist!'));
+            }, this._getDelay(100, 1000));
         });
     }
 
     public create(todoItem: ITodoItem): Promise<ITodoItem> {
         return new Promise<ITodoItem>((resolve) => {
-            const items: ITodoItem[] = this._getItems();
-            items.push({ ...todoItem, id: items.length });
-            this._setItems(items);
+            setTimeout(() => {
+                const items: ITodoItem[] = this._getItems();
+                const newItem: ITodoItem = { ...todoItem, id: items.length + 1 };
+                items.push(newItem);
+                this._setItems(items);
 
-            resolve(todoItem);
+                resolve(newItem);
+            }, this._getDelay(100, 1000));
         });
     }
 
     public deleteById(id: number): Promise<void> {
         return new Promise<void>((resolve) => {
-            const items: ITodoItem[] = this._getItems();
-            const index = items.findIndex(item => item.id === id);
-            if (index) items.splice(index, 1);
-            this._setItems(items);
-            resolve();
+            setTimeout(() => {
+                const items: ITodoItem[] = this._getItems();
+                const index = items.findIndex(item => item.id === id);
+                if (index) items.splice(index, 1);
+                this._setItems(items);
+                
+                resolve();
+            }, this._getDelay(100, 1000));
         });
     }
 }
