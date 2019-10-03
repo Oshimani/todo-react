@@ -7,10 +7,17 @@ import ITodoItem from './models/ITodoItem.model';
 import TodoService from './services/todo.service';
 import ITodoService from './services/todo-service.interface';
 import TodoForm from './todo-form/todo-form.component';
+import ServiceContextType from './models/service-context.model';
+import {ServiceTypeConsumer} from './contexts/service-type.context';
+
+// todo provide service type above this component
+// todo consume service type here
+// set service type dynamically
 
 const App: React.FC = () => {
 
   const [todoItems, setTodoItems] = useState(new Array<ITodoItem>());
+  
   const todoService: ITodoService = new TodoService();
 
   const reloadSingleItem = (id: number) => {
@@ -54,37 +61,39 @@ const App: React.FC = () => {
 
   return (
     <div style={{ textAlign: 'center' }}>
-      <Text styles={{ root: { fontSize: FontSizes.large } }}>My todo app in react</Text>
-      <br />
-      {
-        todoItems &&
-        <Text styles={{
-          root: {
-            fontSize: FontSizes.medium,
-            fontWeight: FontWeights.semilight,
-            selectors: { 'span': { fontWeight: FontWeights.semibold } }
-          }
-        }}>I found <span>{todoItems.length}</span> todos for you.</Text>
-      }
-      <Stack styles={{
-        root: {
-          margin: 'auto',
-          maxWidth: '60%',
-          minWidth: 350
+      <ServiceContextProvider value={ServiceContextType.localStorage}>
+        <Text styles={{ root: { fontSize: FontSizes.large } }}>My todo app in react</Text>
+        <br />
+        {
+          todoItems &&
+          <Text styles={{
+            root: {
+              fontSize: FontSizes.medium,
+              fontWeight: FontWeights.semilight,
+              selectors: { 'span': { fontWeight: FontWeights.semibold } }
+            }
+          }}>I found <span>{todoItems.length}</span> todos for you.</Text>
         }
-      }} tokens={{ childrenGap: 12, padding: 8 }}>
-        <StackItem styles={{ root: { backgroundColor: DefaultPalette.neutralLighterAlt } }} grow={1} >
-          <TodoForm onCreate={(todoItem: ITodoItem) => addItem(todoItem)}></TodoForm>
-        </StackItem>
-        <Separator></Separator>
-        {todoItems.map((todo) => {
-          return (
-            <StackItem key={todo.id} styles={{ root: { backgroundColor: DefaultPalette.neutralLighterAlt } }} grow={1} >
-              <Todo item={todo} onUpdate={(id: number) => reloadSingleItem(id)} onDelete={(id: number) => removeItem(id)}></Todo>
-            </StackItem>
-          );
-        })}
-      </Stack>
+        <Stack styles={{
+          root: {
+            margin: 'auto',
+            maxWidth: '60%',
+            minWidth: 350
+          }
+        }} tokens={{ childrenGap: 12, padding: 8 }}>
+          <StackItem styles={{ root: { backgroundColor: DefaultPalette.neutralLighterAlt } }} grow={1} >
+            <TodoForm onCreate={(todoItem: ITodoItem) => addItem(todoItem)}></TodoForm>
+          </StackItem>
+          <Separator></Separator>
+          {todoItems.map((todo) => {
+            return (
+              <StackItem key={todo.id} styles={{ root: { backgroundColor: DefaultPalette.neutralLighterAlt } }} grow={1} >
+                <Todo item={todo} onUpdate={(id: number) => reloadSingleItem(id)} onDelete={(id: number) => removeItem(id)}></Todo>
+              </StackItem>
+            );
+          })}
+        </Stack>
+      </ServiceContext.Provider>
     </div>
   );
 }
