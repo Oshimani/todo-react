@@ -118,6 +118,15 @@ const Root: React.FC = () => {
                     </Fabric>
                 </div>
             </DataSourceProvider>
+            <div style={{
+                backgroundColor: getTheme().semanticColors.bodyBackground,
+                position: 'fixed',
+                top: 0,
+                left: 0,
+                height: '100%',
+                width: '100%',
+                zIndex:-1000
+            }}></div>
         </ThemeProvider>
     );
 }
