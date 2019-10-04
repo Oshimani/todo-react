@@ -6,7 +6,7 @@ const BASE_URL: string = 'https://localhost:5001/';
 
 export default class TodoService implements ITodoService {
 
-    public getAll(): Promise<ITodoItem[]> {
+    public getAll(showCompleted:boolean): Promise<ITodoItem[]> {
         return new Promise<ITodoItem[]>((resolve, reject) => {
             Axios.get(`/api/todoitems`, { baseURL: BASE_URL, })
 

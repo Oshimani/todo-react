@@ -25,12 +25,17 @@ export default class TodoLocalStorateService implements ITodoService {
         localStorage.setItem(DB_NAME, JSON.stringify(items));
     }
 
-    public getAll() {
+    public getAll(showCompleted: boolean) {
         return new Promise<ITodoItem[]>((resolve) => {
             setTimeout(() => {
-                resolve(
-                    this._getItems()
-                );
+                if (showCompleted)
+                    resolve(
+                        this._getItems()
+                    )
+                else
+                    resolve(
+                        this._getItems().filter(item => !item.isComplete)
+                    );
             }, this._getDelay(100, 1000));
         });
     }
@@ -85,9 +90,9 @@ export default class TodoLocalStorateService implements ITodoService {
             setTimeout(() => {
                 const items: ITodoItem[] = this._getItems();
                 const index = items.findIndex(item => item.id === id);
-                if (index) items.splice(index, 1);
+                if (index !== undefined) items.splice(index, 1);
                 this._setItems(items);
-                
+
                 resolve();
             }, this._getDelay(100, 1000));
         });
