@@ -10,7 +10,8 @@ import {
     DefaultPalette,
     MessageBar,
     MessageBarType,
-    ProgressIndicator
+    ProgressIndicator,
+    getTheme
 } from 'office-ui-fabric-react';
 
 import ITodoItem from '../models/ITodoItem.model';
@@ -89,13 +90,13 @@ const Todo = (props: { item: ITodoItem, onUpdate: Function, onDelete: Function }
 
                 {/* DESCRIPTION */}
                 {props.item.description &&
-                    <Card.Section tokens={{ padding: 4 }} styles={{ root: { borderTop: `solid 1px ${DefaultPalette.neutralQuaternary}` } }}>
+                    <Card.Section tokens={{ padding: 4 }} styles={{ root: { borderTop: `solid 1px ${getTheme().palette.neutralQuaternary}` } }}>
                         <Text>{props.item.description}</Text>
                     </Card.Section>
                 }
 
                 {/* BUTTONS & MESSAGES*/}
-                <Card.Section tokens={{ padding: 4 }} horizontalAlign={"end"} horizontal styles={{ root: { borderTop: `solid 1px ${DefaultPalette.neutralQuaternary}` } }}>
+                <Card.Section tokens={{ padding: 4 }} horizontalAlign={"end"} horizontal styles={{ root: { borderTop: `solid 1px ${getTheme().palette.neutralQuaternary}` } }}>
 
                     {/* AJAX STATE */}
                     {submissionStatus === AjaxState.pending &&

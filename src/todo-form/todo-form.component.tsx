@@ -1,7 +1,7 @@
 import React, { useState, useContext } from 'react'
 import { Card } from '@uifabric/react-cards';
 import { Stack, StackItem, MessageBar, MessageBarType, IconButton, TextField, ProgressIndicator } from 'office-ui-fabric-react';
-import { FontSizes, DefaultPalette } from '@uifabric/styling';
+import { FontSizes, DefaultPalette, getTheme } from '@uifabric/styling';
 import ITodoService from '../services/todo-service.interface';
 import ITodoItem from '../models/ITodoItem.model';
 import { AjaxState } from '../enums/ajax-state.enum';
@@ -112,7 +112,7 @@ const TodoForm = (props: { onCreate: Function }) => {
                                         background: 'none',
                                         selectors: {
                                             '&:hover': {
-                                                background: DefaultPalette.white
+                                                background: getTheme().palette.white
                                             }
                                         }
                                     }
@@ -125,14 +125,14 @@ const TodoForm = (props: { onCreate: Function }) => {
                         </Stack>
 
                     </Card.Section>
-                    <Card.Section tokens={{ padding: 4 }} styles={{ root: { borderTop: `solid 1px ${DefaultPalette.neutralQuaternary}` } }}>
+                    <Card.Section tokens={{ padding: 4 }} styles={{ root: { borderTop: `solid 1px ${getTheme().palette.neutralQuaternary}` } }}>
                         <TextField styles={{
                             root: {},
                             fieldGroup: {
                                 background: 'none',
                                 selectors: {
                                     '&:hover': {
-                                        background: DefaultPalette.white
+                                        background: getTheme().palette.white
                                     }
                                 }
                             }
@@ -147,7 +147,7 @@ const TodoForm = (props: { onCreate: Function }) => {
                     </Card.Section>
 
                     {/* BUTTONS & MESSAGES*/}
-                    <Card.Section tokens={{ padding: 4 }} horizontalAlign={"end"} horizontal styles={{ root: { borderTop: `solid 1px ${DefaultPalette.neutralQuaternary}` } }}>
+                    <Card.Section tokens={{ padding: 4 }} horizontalAlign={"end"} horizontal styles={{ root: { borderTop: `solid 1px ${getTheme().palette.neutralQuaternary}` } }}>
                         {submissionStatus === AjaxState.pending &&
                             <StackItem grow>
                                 <ProgressIndicator />

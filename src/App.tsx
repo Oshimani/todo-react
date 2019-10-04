@@ -5,12 +5,11 @@ import {
   Stack,
   StackItem,
   FontSizes,
-  DefaultPalette,
   FontWeights,
   Toggle,
-  ActionButton
+  ActionButton,
+  getTheme
 } from 'office-ui-fabric-react';
-import { ThemeProvider } from '@uifabric/foundation';
 
 import Todo from './todo/todo.component';
 import ITodoItem from './models/ITodoItem.model';
@@ -93,7 +92,6 @@ const App: React.FC = () => {
 
   return (
     <div style={{ textAlign: 'center' }}>
-
         <Text styles={{ root: { fontSize: FontSizes.large } }}>My todo app in react</Text>
         <br />
         {
@@ -113,7 +111,7 @@ const App: React.FC = () => {
             minWidth: 350
           }
         }} tokens={{ childrenGap: 12, padding: 8 }}>
-          <StackItem styles={{ root: { backgroundColor: DefaultPalette.neutralLighterAlt } }} grow={1} >
+          <StackItem styles={{ root: { backgroundColor: getTheme().palette.neutralLighterAlt } }} grow={1} >
             <TodoForm onCreate={(todoItem: ITodoItem) => addItem(todoItem)}></TodoForm>
           </StackItem>
           <Separator></Separator>
@@ -133,7 +131,7 @@ const App: React.FC = () => {
           </StackItem>
           {todoItems.map((todo) => {
             return (
-              <StackItem key={todo.id} styles={{ root: { backgroundColor: DefaultPalette.neutralLighterAlt } }} grow={1} >
+              <StackItem key={todo.id} styles={{ root: { backgroundColor: getTheme().palette.neutralLighterAlt } }} grow={1} >
                 <Todo item={todo} onUpdate={(id: number) => reloadSingleItem(id)} onDelete={(id: number) => removeItem(id)}></Todo>
               </StackItem>
             );
