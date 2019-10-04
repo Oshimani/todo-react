@@ -1,16 +1,15 @@
 import React, { useEffect, useState } from 'react';
 
 import { ThemeProvider } from '@uifabric/foundation';
-import { DataSourceProvider } from './contexts/data-source.context';
-import { getTheme, ITheme } from '@uifabric/styling';
-import { Fabric, CommandBar } from 'office-ui-fabric-react';
+import { Fabric, CommandBar, Text, getTheme, ITheme } from 'office-ui-fabric-react';
 
 import App from './App';
+import DataSourceType from './models/data-source-type.model';
+import { DataSourceProvider } from './contexts/data-source.context';
 import { PurpleTheme, loadPurpleTheme } from './themes/purple.theme';
 import { IceDarkmodeTheme, loadIceDarkmodeTheme } from './themes/ice-darkmode.theme';
 import { DefaultTheme, loadDefaultTheme } from './themes/default.theme';
 import { HighContrastTheme, loadHightContrastTheme } from './themes/high-contrast.theme';
-import DataSourceType from './models/data-source-type.model';
 
 const Root: React.FC = () => {
 
@@ -64,6 +63,8 @@ const Root: React.FC = () => {
             <DataSourceProvider value={dataSourcetype}>
                 <div style={{ backgroundColor: getTheme().semanticColors.bodyBackground }}>
                     <Fabric styles={{ root: { backgroundColor: getTheme().palette.neutralLighterAlt } }}>
+
+                        {/* TOP MENU */}
                         <CommandBar styles={{
                             root: {
                                 position: 'fixed',
@@ -115,6 +116,18 @@ const Root: React.FC = () => {
                         <div style={{ marginTop: 44 }}>
                             <App />
                         </div>
+
+                        {/* FOOTER */}
+                        <div style={{
+                            textAlign: 'center',
+                            marginTop: 12
+                        }}>
+                            <Text styles={{
+                                root: {
+
+                                }
+                            }}>Find repository under <a style={{ color: getTheme().palette.themePrimary }} href='https://github.com/Oshimani/todo-react'>https://github.com/Oshimani/todo-react</a>.</Text>
+                        </div>
                     </Fabric>
                 </div>
             </DataSourceProvider>
@@ -125,7 +138,7 @@ const Root: React.FC = () => {
                 left: 0,
                 height: '100%',
                 width: '100%',
-                zIndex:-1000
+                zIndex: -1000
             }}></div>
         </ThemeProvider>
     );

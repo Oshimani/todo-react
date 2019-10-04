@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import * as serviceWorker from './serviceWorker';
-import { initializeIcons } from '@uifabric/icons';
+import { initializeIcons } from 'office-ui-fabric-react';
 import Root from './Root';
 initializeIcons();
 

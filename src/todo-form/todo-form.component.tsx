@@ -1,7 +1,7 @@
 import React, { useState, useContext } from 'react'
 import { Card } from '@uifabric/react-cards';
-import { Stack, StackItem, MessageBar, MessageBarType, IconButton, TextField, ProgressIndicator } from 'office-ui-fabric-react';
-import { FontSizes, DefaultPalette, getTheme } from '@uifabric/styling';
+import { FontSizes, getTheme, Stack, StackItem, MessageBar, MessageBarType, IconButton, TextField, ProgressIndicator } from 'office-ui-fabric-react';
+
 import ITodoService from '../services/todo-service.interface';
 import ITodoItem from '../models/ITodoItem.model';
 import { AjaxState } from '../enums/ajax-state.enum';

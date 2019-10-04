@@ -7,7 +7,6 @@ import {
     StackItem,
     Stack,
     FontSizes,
-    DefaultPalette,
     MessageBar,
     MessageBarType,
     ProgressIndicator,
@@ -31,14 +30,14 @@ const Todo = (props: { item: ITodoItem, onUpdate: Function, onDelete: Function }
         setSubmissionStatus(AjaxState.pending);
         todoService.update(props.item.id, { ...props.item, isComplete: true, })
 
-            .then((updatedTodo: ITodoItem) => {
+            .then(() => {
                 // set initial because we already have a message bar for completed todos
                 setSubmissionStatus(AjaxState.initial);
 
                 props.onUpdate(props.item.id);
             })
 
-            .catch(error => {
+            .catch(() => {
                 console.error(`Failed to update!`);
                 setSubmissionStatus(AjaxState.error);
                 setTimeout(() => {
@@ -55,7 +54,7 @@ const Todo = (props: { item: ITodoItem, onUpdate: Function, onDelete: Function }
                 props.onDelete(props.item.id);
             })
 
-            .catch(error => {
+            .catch(() => {
                 console.error(`Failed to delete!`);
                 setSubmissionStatus(AjaxState.error);
                 setTimeout(() => {

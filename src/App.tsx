@@ -92,51 +92,53 @@ const App: React.FC = () => {
 
   return (
     <div style={{ textAlign: 'center' }}>
-        <Text styles={{ root: { fontSize: FontSizes.large } }}>My todo app in react</Text>
-        <br />
-        {
-          todoItems &&
-          <Text styles={{
-            root: {
-              fontSize: FontSizes.medium,
-              fontWeight: FontWeights.semilight,
-              selectors: { 'span': { fontWeight: FontWeights.semibold } }
-            }
-          }}>I found <span>{todoItems.length}</span> todos for you.</Text>
-        }
-        <Stack styles={{
+      <Text styles={{ root: { fontSize: FontSizes.large } }}>My todo app in react</Text>
+      <br />
+      {
+        todoItems &&
+        <Text styles={{
           root: {
-            margin: 'auto',
-            maxWidth: '60%',
-            minWidth: 350
+            fontSize: FontSizes.medium,
+            fontWeight: FontWeights.semilight,
+            selectors: { 'span': { fontWeight: FontWeights.semibold } }
           }
-        }} tokens={{ childrenGap: 12, padding: 8 }}>
-          <StackItem styles={{ root: { backgroundColor: getTheme().palette.neutralLighterAlt } }} grow={1} >
-            <TodoForm onCreate={(todoItem: ITodoItem) => addItem(todoItem)}></TodoForm>
-          </StackItem>
-          <Separator></Separator>
+        }}>I found <span>{todoItems.length}</span> todos for you.</Text>
+      }
+      <Stack styles={{
+        root: {
+          margin: 'auto',
+          maxWidth: '60%',
+          minWidth: 350
+        }
+      }} tokens={{ childrenGap: 12, padding: 8 }}>
+        <StackItem styles={{
+          root: { backgroundColor: getTheme().palette.neutralLighterAlt }
+        }} grow={1} >
+          <TodoForm onCreate={(todoItem: ITodoItem) => addItem(todoItem)}></TodoForm>
+        </StackItem>
+        <Separator></Separator>
 
-          <StackItem styles={{ root: { textAlign: 'initial' } }}>
-            <Stack horizontal>
-              <StackItem grow>
-                <Toggle label="Show completed todos" defaultChecked onText="On" offText="Off"
-                  onChange={(event, checked) => toggleShowCompleted(Boolean(checked))} />
-              </StackItem>
-              <StackItem align='end'>
-                <ActionButton iconProps={{ iconName: 'RecycleBin' }}
-                  text='Delete completed todos'
-                  onClick={() => clickedDeleteAllItems()}></ActionButton>
-              </StackItem>
-            </Stack>
-          </StackItem>
-          {todoItems.map((todo) => {
-            return (
-              <StackItem key={todo.id} styles={{ root: { backgroundColor: getTheme().palette.neutralLighterAlt } }} grow={1} >
-                <Todo item={todo} onUpdate={(id: number) => reloadSingleItem(id)} onDelete={(id: number) => removeItem(id)}></Todo>
-              </StackItem>
-            );
-          })}
-        </Stack>
+        <StackItem styles={{ root: { textAlign: 'initial' } }}>
+          <Stack horizontal>
+            <StackItem grow>
+              <Toggle label="Show completed todos" defaultChecked onText="On" offText="Off"
+                onChange={(event, checked) => toggleShowCompleted(Boolean(checked))} />
+            </StackItem>
+            <StackItem align='end'>
+              <ActionButton iconProps={{ iconName: 'RecycleBin' }}
+                text='Delete completed todos'
+                onClick={() => clickedDeleteAllItems()}></ActionButton>
+            </StackItem>
+          </Stack>
+        </StackItem>
+        {todoItems.map((todo) => {
+          return (
+            <StackItem key={todo.id} styles={{ root: { backgroundColor: getTheme().palette.neutralLighterAlt } }} grow={1} >
+              <Todo item={todo} onUpdate={(id: number) => reloadSingleItem(id)} onDelete={(id: number) => removeItem(id)}></Todo>
+            </StackItem>
+          );
+        })}
+      </Stack>
     </div>
   );
 }
