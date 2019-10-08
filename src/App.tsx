@@ -104,6 +104,8 @@ const App: React.FC = () => {
           }
         }}>I found <span>{todoItems.length}</span> todos for you.</Text>
       }
+
+      {/* NEW TODO FORM */}
       <Stack styles={{
         root: {
           margin: 'auto',
@@ -116,8 +118,10 @@ const App: React.FC = () => {
         }} grow={1} >
           <TodoForm onCreate={(todoItem: ITodoItem) => addItem(todoItem)}></TodoForm>
         </StackItem>
+
         <Separator></Separator>
 
+        {/* TODO LIST CONTROLS */}
         <StackItem styles={{ root: { textAlign: 'initial' } }}>
           <Stack horizontal>
             <StackItem grow>
@@ -131,9 +135,15 @@ const App: React.FC = () => {
             </StackItem>
           </Stack>
         </StackItem>
+
+        {/* TODO LIST ITEMS */}
         {todoItems.map((todo) => {
           return (
-            <StackItem key={todo.id} styles={{ root: { backgroundColor: getTheme().palette.neutralLighterAlt } }} grow={1} >
+            <StackItem key={todo.id} styles={{
+              root: {
+                backgroundColor: getTheme().palette.neutralLighterAlt
+              }
+            }} grow={1} >
               <Todo item={todo} onUpdate={(id: number) => reloadSingleItem(id)} onDelete={(id: number) => removeItem(id)}></Todo>
             </StackItem>
           );
